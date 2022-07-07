@@ -1,0 +1,18 @@
+.search_btn:hover{
+  background-color: blue!important;
+  border: 1px solid #fff;
+  transform: scale(1.1) rotate(-1deg);
+  transition: all 2s;
+}
+.favLength {
+  margin-left: 0.5rem;
+  border: 1px solid #fff;
+  padding: 0px 5px;
+  background-color: #dc3136;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 800;
+}
+.navLink,form a {
+  font-size: 1.25rem;
+}
