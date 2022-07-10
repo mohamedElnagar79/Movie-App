@@ -2,7 +2,7 @@ import "./movies.css";
 import { Link } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { useState } from "react";
 import { addFavorites, deleteFavorites } from "../../../Store/Actions/Favorites";
 

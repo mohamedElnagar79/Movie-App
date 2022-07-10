@@ -1,29 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import "./MoviesStyle.css";
-import axios from "axios";
 import MoviesCard from "./MoviesCard/MoviesCard"
+import { useDispatch,useSelector } from "react-redux";
+import {getMovies} from "../../Store/Actions/movies";
+import {LangContext} from "../../context/LanContext";
 
-function Movies() {
-  const [movies, setMovies] = useState([]);
-  useEffect(() => {
-    axios
-      .get(
-        "https://api.themoviedb.org/3/movie/popular?",
-        {
-          params: {
-            api_key: "db6d60b6f80485402b525858fc3a7e1f",
-          },
-        }
-      )
-      .then((res) => setMovies(res.data.results))
-      .catch((err) => console.log("err ", err));
-  });
+
+function Movies({ setData }) {
+  const value = useContext(LangContext);
+
+  const {movies} = useSelector((state)=>state.movies)
+   const dispatch =  useDispatch()
+   useEffect(() => {
+      dispatch(getMovies())
+  },[]);
 
   return (
-    <>
-      
+    < >
       <div class="row row-cols-1 row-cols-md-4 g-0 ">
-        {
+        { 
           movies.map(movie=>{
             return (
               <div className="col" key={movie.id}>

@@ -1,16 +1,44 @@
-// import { Link } from "react-router-dom";
 import "./navStyle.css";
+import { Link } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
 import { useSelector } from "react-redux";
+import { setDataLanguage } from "../../Store/Actions/movies";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { LangContext } from "../../context/LanContext";
 
 // import {  useState } from "react";
 
-import { Link } from "react-router-dom";
-
-function NavComponent() {
+function NavComponent({ data, setData }) {
+  const [search, setSearch] = useState("");
+  const [originalData, setOriginalDat] = useState([]);
+  const { language, setLanguage } = useContext(LangContext);
   const favorites = useSelector((state) => state.fav.favorites);
+  const dispatch = useDispatch();
+
+  const fetchData = () => {
+    axios
+      .get(
+        `
+        https://api.themoviedb.org/3/movie/popular?api_key=db6d60b6f80485402b525858fc3a7e1f&page=1&language=${language}`
+      )
+      .then((res) => {
+        setData(res.data.results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+    console.log("current:", language);
+  }, [language]);
+
+  
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div className="container-fluid">
           <a className="navbar-brand text-danger" href="#">
             Elnagar
@@ -36,8 +64,11 @@ function NavComponent() {
               <li className="nav-item">
                 <Link to="/favorites" className="nav-link navLink">
                   Favorite
-                  {favorites.length > 0 ?<span className="favLength">{favorites.length}</span>:""}
-                  
+                  {favorites.length > 0 ? (
+                    <span className="favLength">{favorites.length}</span>
+                  ) : (
+                    ""
+                  )}
                 </Link>
               </li>
             </ul>
@@ -48,7 +79,19 @@ function NavComponent() {
                 placeholder="Search"
                 aria-label="Search"
               /> */}
-               <Link to="/search" className="nav-link text-light mx-2 ">Search</Link>
+              <select
+                onChange={(e) => {
+                  dispatch(setDataLanguage(e.target.value));
+                }}
+              >
+                <option defaultValue="en">en</option>
+                <option value="fr">fr</option>
+                <option value="ar">ar</option>
+              </select>
+              <Link to="/search" className="nav-link text-light mx-2 ">
+                Search
+              </Link>
+
               {/* <button
                 className="btn btn-outline-primary bg-light search_btn"
                 type="submit"
